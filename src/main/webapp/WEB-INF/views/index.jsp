@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="<c:url value="resources/css/style.css"/>"/>
 </head>
 <body>
-Weee, hello:)
+Weee, hello:)</br>
+This is some basic version of home page.</br>
+By the way, some dependencies were needed to run jsp files.
 </body>
 </html>
