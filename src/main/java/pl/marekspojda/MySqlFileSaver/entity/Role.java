@@ -9,15 +9,15 @@ import javax.persistence.Id;
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long roleid;
+	private Long roleId;
 	private String role;
 
-	public Long getRoleid() {
-		return roleid;
+	public Long getRoleId() {
+		return roleId;
 	}
 
-	public void setRoleid(Long roleid) {
-		this.roleid = roleid;
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
 	}
 
 	public String getRole() {

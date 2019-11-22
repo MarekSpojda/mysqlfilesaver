@@ -12,31 +12,39 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long userid;
+	private Long userId;
 	private String name;
 	private String surname;
 	private String email;
 	private String password;
 	private int active = 1;
+
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "userid"), inverseJoinColumns = @JoinColumn(name = "roleid"))
 	private List<Role> roles;
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "user_file", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "fileId"))
+	private List<FileRepresentation> files;
+
+	// TODO User: check if we really need it
 	public User() {
 	}
 
+	// TODO User: check if we really need it 2
 	public User(User user) {
 		this.active = user.getActive();
 		this.email = user.getEmail();
 		this.roles = user.getRoles();
 		this.name = user.getName();
 		this.surname = user.getSurname();
-		this.userid = user.getUserid();
+		this.userId = user.getUserId();
 		this.password = user.getPassword();
 	}
 
@@ -54,12 +62,12 @@ public class User {
 		this.setRoles(roles);
 	}
 
-	public Long getUserid() {
-		return userid;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUserid(Long userid) {
-		this.userid = userid;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public String getName() {
