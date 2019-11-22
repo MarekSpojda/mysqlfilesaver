@@ -14,6 +14,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import pl.marekspojda.MySqlFileSaver.config.SecurityConfiguration;
+import pl.marekspojda.MySqlFileSaver.dto.UserDTO;
+import pl.marekspojda.MySqlFileSaver.repository.RoleRepository;
+
 @Entity
 public class User {
 	@Id
@@ -26,7 +30,7 @@ public class User {
 	private int active = 1;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "userid"), inverseJoinColumns = @JoinColumn(name = "roleid"))
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
 	private List<Role> roles;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -34,19 +38,19 @@ public class User {
 	private List<FileRepresentation> files;
 
 	// TODO User: check if we really need it
-	public User() {
-	}
+//	public User() {
+//	}
 
 	// TODO User: check if we really need it 2
-	public User(User user) {
-		this.active = user.getActive();
-		this.email = user.getEmail();
-		this.roles = user.getRoles();
-		this.name = user.getName();
-		this.surname = user.getSurname();
-		this.userId = user.getUserId();
-		this.password = user.getPassword();
-	}
+//	public User(User user) {
+//		this.active = user.getActive();
+//		this.email = user.getEmail();
+//		this.roles = user.getRoles();
+//		this.name = user.getName();
+//		this.surname = user.getSurname();
+//		this.userId = user.getUserId();
+//		this.password = user.getPassword();
+//	}
 
 	public User(UserDTO userDTO, RoleRepository roleRepository) {
 		this.setName(userDTO.getName());

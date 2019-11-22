@@ -9,11 +9,9 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>MySql FileSaver</title>
+    <title>MySql FileSaver - Admin</title>
 </head>
 <body>
-Weee, hello:)</br>
-This is some basic version of home page.</br>
-By the way, some dependencies were needed to run jsp files.
+It seems like you're admin:)
 </body>
 </html>
