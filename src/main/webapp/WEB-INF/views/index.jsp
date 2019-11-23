@@ -12,6 +12,7 @@
     <title>MySql FileSaver</title>
 </head>
 <body>
+<%@ include file="header.jsp" %> 
 Weee, hello:)</br>
 This is some basic version of home page.</br>
 By the way, some dependencies were needed to run jsp files.

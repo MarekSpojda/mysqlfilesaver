@@ -12,6 +12,7 @@
     <title>MySql FileSaver - Admin</title>
 </head>
 <body>
+<%@ include file="header.jsp" %> 
 It seems like you're admin:)
 </body>
 </html>

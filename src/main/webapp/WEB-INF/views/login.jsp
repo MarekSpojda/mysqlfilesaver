@@ -12,6 +12,7 @@
     <title>MySql FileSaver - Login</title>
 </head>
 <body>
+<%@ include file="header.jsp" %> 
 Well, there should be login form but... well... oneday...
 </body>
 </html>
