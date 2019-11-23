@@ -37,20 +37,20 @@ public class User {
 	@JoinTable(name = "user_file", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "fileId"))
 	private List<FileRepresentation> files;
 
-	// TODO User: check if we really need it
-//	public User() {
-//	}
+	// Needed for CustomUserDetails
+	public User() {
+	}
 
-	// TODO User: check if we really need it 2
-//	public User(User user) {
-//		this.active = user.getActive();
-//		this.email = user.getEmail();
-//		this.roles = user.getRoles();
-//		this.name = user.getName();
-//		this.surname = user.getSurname();
-//		this.userId = user.getUserId();
-//		this.password = user.getPassword();
-//	}
+	// Needed for CustomUserDetails
+	public User(User user) {
+		this.active = user.getActive();
+		this.email = user.getEmail();
+		this.roles = user.getRoles();
+		this.name = user.getName();
+		this.surname = user.getSurname();
+		this.userId = user.getUserId();
+		this.password = user.getPassword();
+	}
 
 	public User(UserDTO userDTO, RoleRepository roleRepository) {
 		this.setName(userDTO.getName());

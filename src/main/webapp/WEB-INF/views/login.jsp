@@ -13,6 +13,18 @@
 </head>
 <body>
 <%@ include file="header.jsp" %> 
-Well, there should be login form but... well... oneday...
+<h2>Zaloguj się</h2>
+        <form action="/login" method="post">
+            <div>
+                <input type="email" name="username" placeholder="Email"/>
+            </div>
+            <div>
+                <input type="password" name="password" placeholder="Hasło"/>
+            </div>
+
+            <div>
+                <button type="submit">Zaloguj się</button>
+            </div>
+        </form>
 </body>
 </html>

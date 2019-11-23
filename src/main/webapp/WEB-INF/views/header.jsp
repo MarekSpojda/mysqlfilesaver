@@ -7,9 +7,16 @@
 <!DOCTYPE html>
     <nav>
             <sec:authentication var="user" property="principal"/>
-            <sec:authorize access="hasRole('ROLE_USER') and isAuthenticated()">
+            <sec:authorize access="hasRole('ROLE_USER') and !hasRole('ROLE_ADMIN') and isAuthenticated()">
                     <button>Witaj ${user.name} ${user.surname}</button> |
                 <a href="/logged">Menu</a> |
+                <a href="/logout">Wyloguj</a> |
+            </sec:authorize>
+            
+            <sec:authorize access="hasRole('ROLE_ADMIN') and isAuthenticated()">
+                    <button>Witaj ${user.name} ${user.surname}</button> |
+                <a href="/logged">Menu</a> |
+                <a href="/admin">Panel administratora</a> |
                 <a href="/logout">Wyloguj</a> |
             </sec:authorize>
 
