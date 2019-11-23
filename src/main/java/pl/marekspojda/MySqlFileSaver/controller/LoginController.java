@@ -23,7 +23,7 @@ public class LoginController implements ErrorController {
 		return "redirect:/";
 	}
 
-	@RequestMapping("/logged")
+	@RequestMapping("/user")
 	public String allowedToUsersOnly(HttpServletRequest request) {
 		if (request.isUserInRole("ROLE_USER")) {
 			return "user";

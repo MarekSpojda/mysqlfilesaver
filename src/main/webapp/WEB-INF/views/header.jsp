@@ -9,20 +9,20 @@
             <sec:authentication var="user" property="principal"/>
             <sec:authorize access="hasRole('ROLE_USER') and !hasRole('ROLE_ADMIN') and isAuthenticated()">
                     <button>Witaj ${user.name} ${user.surname}</button> |
-                <a href="/logged">Menu</a> |
-                <a href="/logout">Wyloguj</a> |
+                <a href="/user">Menu</a> |
+                <a href="/logout">Log out</a> |
             </sec:authorize>
             
             <sec:authorize access="hasRole('ROLE_ADMIN') and isAuthenticated()">
                     <button>Witaj ${user.name} ${user.surname}</button> |
-                <a href="/logged">Menu</a> |
-                <a href="/admin">Panel administratora</a> |
-                <a href="/logout">Wyloguj</a> |
+                <a href="/user">Menu</a> |
+                <a href="/admin">Administrator panel</a> |
+                <a href="/logout">Log out</a> |
             </sec:authorize>
 
             <sec:authorize access="!isAuthenticated()">
-                <a href="/login">Zaloguj</a> |
-                <a href="/register">Załóż konto</a> |
+                <a href="/login">Log in</a> |
+                <a href="/register">Create account</a> |
             </sec:authorize>
 
      <a href="/#">Start</a>

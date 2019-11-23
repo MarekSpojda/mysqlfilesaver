@@ -14,5 +14,10 @@
 <body>
 <%@ include file="header.jsp" %> 
 Seems like you're only user. Still better love story than Twilight.
+<form action="/savefile" method="post">
+            <div>
+                <button type="submit">Go!</button>
+            </div>
+        </form>
 </body>
 </html>
