@@ -10,6 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>MySql FileSaver - Admin</title>
+    
+    <script src="<c:url value="resources/js/jquery-3.4.1.js"/>"></script>
 </head>
 <body>
 <%@ include file="header.jsp" %> 

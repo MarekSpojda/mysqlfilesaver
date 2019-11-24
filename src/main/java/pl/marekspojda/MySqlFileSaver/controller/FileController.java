@@ -30,22 +30,17 @@ public class FileController {
 //	JTable tabela;
 
 	@RequestMapping(value = "/savefile", method = RequestMethod.POST)
-	public String saveFilewindow() {
-		saveFrame = new JFrame();
-		saveFrame.setSize(600, 400);
-		saveFrame.setLocationRelativeTo(null);
-		saveFrame.setTitle("Welcome :)");
+	public void saveFilewindow() {
+			saveFrame = new JFrame();
+			saveFrame.setSize(600, 400);
+			saveFrame.setLocationRelativeTo(null);
+			saveFrame.setUndecorated(true);
 
-		saveFrame.setResizable(false);
+			saveFrame.setResizable(false);
 
-		drawPanel();
+			drawPanel();
 
-		saveFrame.setVisible(true);
-		return "/user";
-	}
-
-	public static void main(String[] args) {
-		new FileController().saveFilewindow();
+			saveFrame.setVisible(true);
 	}
 
 	private void drawPanel() {
@@ -72,7 +67,7 @@ public class FileController {
 		closeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				saveFrame.setVisible(false);
+				saveFrame.dispose();
 			}
 		});
 		closeButton.setBounds(5, 135, 100, 20);
