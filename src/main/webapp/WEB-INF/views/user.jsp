@@ -25,7 +25,7 @@ Seems like you're only user. Still better love story than Twilight.
         
         <form>
             <div>
-                <button type="submit" id="go2">Go2!</button>
+                <button type="submit" id="go2">Let's test script!</button>
             </div>
         </form>
 </body>

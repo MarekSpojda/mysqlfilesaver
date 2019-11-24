@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.*;
 
@@ -13,13 +14,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.sun.xml.bind.v2.TODO;
+
 @Controller
 public class FileController {
-	JFrame saveFrame;
-	JPanel panel;
-//	JLabel etykieta;
+	private final JFileChooser fileChooser = new JFileChooser();
+
+	private JFrame saveFrame;
+	private JPanel panel;
+	private File file;
+	private JLabel fileLabel, fileLabelDescription;
 //	JTextField poleTekstowe1;
-	JButton closeButton;
+	private JButton closeButton, openButton, saveButton;
 //	JTextArea obszarTekstowy;
 //	JCheckBox poleZaznaczenia;
 //	JRadioButton radio1, radio2;
@@ -31,24 +37,25 @@ public class FileController {
 
 	@RequestMapping(value = "/savefile", method = RequestMethod.POST)
 	public void saveFilewindow() {
-			saveFrame = new JFrame();
-			saveFrame.setSize(600, 400);
-			saveFrame.setLocationRelativeTo(null);
-			saveFrame.setUndecorated(true);
+		saveFrame = new JFrame();
+		saveFrame.setSize(700, 55);
+		saveFrame.setLocationRelativeTo(null);
+		saveFrame.setUndecorated(true);
 
-			saveFrame.setResizable(false);
+		saveFrame.setResizable(false);
 
-			drawPanel();
+		drawPanel();
 
-			saveFrame.setVisible(true);
+		saveFrame.setVisible(true);
 	}
 
 	private void drawPanel() {
 		panel = new JPanel();
 		panel.setBackground(Color.LIGHT_GRAY);
+		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		panel.setLayout(null);
 
-//		rysujEtykieta();
+		drawLabels();
 //		rysujPoleTekstowe();
 		drawButtons();
 //		rysujObszarTekstowy();
@@ -62,6 +69,19 @@ public class FileController {
 		saveFrame.getContentPane().add(BorderLayout.CENTER, panel);
 	}
 
+	private void drawLabels() {
+		fileLabel = new JLabel("");
+		fileLabel.setBounds(130, 5, 565, 20);
+		fileLabel.setBackground(Color.WHITE);
+		fileLabel.setOpaque(true);
+		fileLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		panel.add(fileLabel);
+
+		fileLabelDescription = new JLabel("Wybrany plik:");
+		fileLabelDescription.setBounds(5, 5, 120, 20);
+		panel.add(fileLabelDescription);
+	}
+
 	private void drawButtons() {
 		closeButton = new JButton("Exit");
 		closeButton.addActionListener(new ActionListener() {
@@ -70,7 +90,36 @@ public class FileController {
 				saveFrame.dispose();
 			}
 		});
-		closeButton.setBounds(5, 135, 100, 20);
+		closeButton.setBounds(215, 30, 100, 20);
 		panel.add(closeButton);
+
+		openButton = new JButton("Open file");
+		openButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == openButton) {
+					int returnVal = fileChooser.showOpenDialog(saveFrame);
+
+					if (returnVal == JFileChooser.APPROVE_OPTION) {
+						File file = fileChooser.getSelectedFile();
+						fileLabel.setText(file.getName());
+					} else {
+						System.out.println("Open command cancelled by user.");
+					}
+				}
+			}
+		});
+		openButton.setBounds(5, 30, 100, 20);
+		panel.add(openButton);
+
+		saveButton = new JButton("Save file");
+		saveButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO implement savefile action
+			}
+		});
+		saveButton.setBounds(110, 30, 100, 20);
+		panel.add(saveButton);
 	}
 }
