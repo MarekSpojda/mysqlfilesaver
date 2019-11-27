@@ -1,5 +1,6 @@
 package pl.marekspojda.MySqlFileSaver.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,8 @@ public class FileRepresentation {
 	private Long fileId;
 	private String fileName;
 	private String fileExtension;
+	
+	@Column(columnDefinition = "LONGBLOB")
 	private byte[] fileContent;
 
 	public Long getFileId() {

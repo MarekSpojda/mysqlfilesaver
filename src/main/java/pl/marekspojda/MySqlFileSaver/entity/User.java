@@ -50,6 +50,7 @@ public class User {
 		this.surname = user.getSurname();
 		this.userId = user.getUserId();
 		this.password = user.getPassword();
+		this.files = user.getFiles();
 	}
 
 	public User(UserDTO userDTO, RoleRepository roleRepository) {
@@ -120,5 +121,13 @@ public class User {
 
 	public void setActive(int active) {
 		this.active = active;
+	}
+
+	public List<FileRepresentation> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<FileRepresentation> files) {
+		this.files = files;
 	}
 }

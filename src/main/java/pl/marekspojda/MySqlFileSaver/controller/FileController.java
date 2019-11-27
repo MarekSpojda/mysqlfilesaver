@@ -1,42 +1,43 @@
 package pl.marekspojda.MySqlFileSaver.controller;
 
 import javax.swing.JFrame;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
+import java.io.IOException;
+import java.nio.file.Files;
+import java.security.Principal;
 import javax.swing.*;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.sun.xml.bind.v2.TODO;
+import pl.marekspojda.MySqlFileSaver.entity.FileRepresentation;
+import pl.marekspojda.MySqlFileSaver.entity.User;
+import pl.marekspojda.MySqlFileSaver.repository.UserRepository;
 
 @Controller
 public class FileController {
 	private final JFileChooser fileChooser = new JFileChooser();
+	private final UserRepository userRepository;
 
 	private JFrame saveFrame;
 	private JPanel panel;
 	private File file;
 	private JLabel fileLabel, fileLabelDescription;
-//	JTextField poleTekstowe1;
+	private Principal principal;
 	private JButton closeButton, openButton, saveButton;
-//	JTextArea obszarTekstowy;
-//	JCheckBox poleZaznaczenia;
-//	JRadioButton radio1, radio2;
-//	ButtonGroup grupaRadio;
-//	JList<String> listaPrzewijalna;
-//	JComboBox<String> listaRozwijalna;
-//	JTabbedPane zakladka;
-//	JTable tabela;
+
+	public FileController(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
 	@RequestMapping(value = "/savefile", method = RequestMethod.POST)
-	public void saveFilewindow() {
+	public void saveFilewindow(Principal principal) {
+		this.principal = principal;
 		saveFrame = new JFrame();
 		saveFrame.setSize(700, 55);
 		saveFrame.setLocationRelativeTo(null);
@@ -56,15 +57,7 @@ public class FileController {
 		panel.setLayout(null);
 
 		drawLabels();
-//		rysujPoleTekstowe();
 		drawButtons();
-//		rysujObszarTekstowy();
-//		rysujPoleZaznaczenia();
-//		rysujRadioButton();
-//		rysujListaPrzewijalna();
-//		rysujListaRozwijalna();
-//		rysujZakladka();
-//		rysujTabela();
 
 		saveFrame.getContentPane().add(BorderLayout.CENTER, panel);
 	}
@@ -93,6 +86,10 @@ public class FileController {
 		closeButton.setBounds(215, 30, 100, 20);
 		panel.add(closeButton);
 
+		// Creating savebutton earlier to prevent null exception
+		saveButton = new JButton("Save file");
+		saveButton.setEnabled(false);
+
 		openButton = new JButton("Open file");
 		openButton.addActionListener(new ActionListener() {
 			@Override
@@ -101,8 +98,9 @@ public class FileController {
 					int returnVal = fileChooser.showOpenDialog(saveFrame);
 
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
-						File file = fileChooser.getSelectedFile();
+						file = fileChooser.getSelectedFile();
 						fileLabel.setText(file.getName());
+						saveButton.setEnabled(true);
 					} else {
 						System.out.println("Open command cancelled by user.");
 					}
@@ -112,11 +110,39 @@ public class FileController {
 		openButton.setBounds(5, 30, 100, 20);
 		panel.add(openButton);
 
-		saveButton = new JButton("Save file");
 		saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO implement savefile action
+				String fullFileName = file.getName();
+				int dotPos = fullFileName.lastIndexOf(".");
+				String fileName;
+				String fileExtension;
+
+				if (dotPos == -1) {
+					fileName = fullFileName;
+					fileExtension = "non";
+				} else {
+					fileName = fullFileName.substring(0, dotPos);
+					fileExtension = fullFileName.substring(dotPos + 1, fullFileName.length());
+				}
+
+				// Creating file object to save
+				FileRepresentation fileToSave = new FileRepresentation();
+				fileToSave.setFileExtension(fileExtension);
+				fileToSave.setFileName(fileName);
+				try {
+					fileToSave.setFileContent(Files.readAllBytes(file.toPath()));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+
+				User loadedUser = userRepository.findUserByEmailCustom(principal.getName());
+				if (loadedUser != null) {
+					User userToUpdate = loadedUser;
+					userToUpdate.getFiles().add(fileToSave);
+					userRepository.save(userToUpdate);
+					saveFrame.dispose();
+				}
 			}
 		});
 		saveButton.setBounds(110, 30, 100, 20);

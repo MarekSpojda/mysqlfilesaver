@@ -19,8 +19,6 @@ public class CustomUserDetails extends User implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
 
-//TODO Currently handled with one role for an user
-
 		List<Role> userRole = super.getRoles();
 
 		if (userRole != null) {
@@ -47,6 +45,11 @@ public class CustomUserDetails extends User implements UserDetails {
 	@Override
 	public List<Role> getRoles() {
 		return super.getRoles();
+	}
+
+	@Override
+	public List<FileRepresentation> getFiles() {
+		return super.getFiles();
 	}
 
 	@Override
