@@ -28,9 +28,10 @@ public class FileController {
 	private final UserRepository userRepository;
 
 	private JFrame saveFrame, downloadFrame;
-	private JPanel savePanel;
+	private JPanel savePanel, downloadPanel;
 	private File file;
-	private JLabel fileLabel, fileLabelDescription;
+	private FileRepresentation fileRepresentation;
+	private JLabel fileSaveLabel, fileLoadLabel, fileSaveLabelDescription, fileLoadLabelDescription;
 	private Principal principal;
 	private JButton closeSaveButton, openSaveButton, saveSaveButton;
 
@@ -61,15 +62,44 @@ public class FileController {
 
 	@RequestMapping(path = "/files/{id}", produces = "text/html; charset=UTF-8", method = RequestMethod.POST)
 	public void downloadFileWindow(@PathVariable String id) {
-		downloadFrame= new JFrame();
+		//TODO loadFile: id received from script is undefined
+//		Long fileId = Long.parseLong(id);
+		System.out.println("Hmmmpff...: " + id);
+		downloadFrame = new JFrame();
 		downloadFrame.setSize(700, 55);
 		downloadFrame.setLocationRelativeTo(null);
 		downloadFrame.setUndecorated(true);
 		downloadFrame.setResizable(false);
+//		fileRepresentation = this.getFileRepresentation(fileId);
 
-//		drawSavePanel();
+//		drawDownloadPanel();
 
 		downloadFrame.setVisible(true);
+	}
+
+	private FileRepresentation getFileRepresentation(Long id) {
+		FileRepresentation fileRepresentation = null;
+
+		for (FileRepresentation file : userRepository.findUserByEmailCustom(principal.getName()).getFiles()) {
+			if (file.getFileId().equals(id)) {
+				fileRepresentation = file;
+				break;
+			}
+		}
+
+		return fileRepresentation;
+	}
+
+	private void drawDownloadPanel() {
+		downloadPanel = new JPanel();
+		downloadPanel.setBackground(Color.LIGHT_GRAY);
+		downloadPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		downloadPanel.setLayout(null);
+
+		drawDownloadLabels();
+//		drawButtons();
+
+		downloadFrame.getContentPane().add(BorderLayout.CENTER, downloadPanel);
 	}
 
 	private void drawSavePanel() {
@@ -78,26 +108,39 @@ public class FileController {
 		savePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		savePanel.setLayout(null);
 
-		drawLabels();
-		drawButtons();
+		drawSaveLabels();
+		drawSaveButtons();
 
 		saveFrame.getContentPane().add(BorderLayout.CENTER, savePanel);
 	}
 
-	private void drawLabels() {
-		fileLabel = new JLabel("");
-		fileLabel.setBounds(130, 5, 565, 20);
-		fileLabel.setBackground(Color.WHITE);
-		fileLabel.setOpaque(true);
-		fileLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-		savePanel.add(fileLabel);
+	private void drawDownloadLabels() {
+		fileLoadLabel = new JLabel(fileRepresentation.getFileName() + "." + fileRepresentation.getFileExtension());
+		fileLoadLabel.setBounds(130, 5, 565, 20);
+		fileLoadLabel.setBackground(Color.WHITE);
+		fileLoadLabel.setOpaque(true);
+		fileLoadLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		downloadPanel.add(fileLoadLabel);
 
-		fileLabelDescription = new JLabel("Wybrany plik:");
-		fileLabelDescription.setBounds(5, 5, 120, 20);
-		savePanel.add(fileLabelDescription);
+		fileLoadLabelDescription = new JLabel("Wybrany plik:");
+		fileLoadLabelDescription.setBounds(5, 5, 120, 20);
+		downloadPanel.add(fileLoadLabelDescription);
 	}
 
-	private void drawButtons() {
+	private void drawSaveLabels() {
+		fileSaveLabel = new JLabel("");
+		fileSaveLabel.setBounds(130, 5, 565, 20);
+		fileSaveLabel.setBackground(Color.WHITE);
+		fileSaveLabel.setOpaque(true);
+		fileSaveLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		savePanel.add(fileSaveLabel);
+
+		fileSaveLabelDescription = new JLabel("Wybrany plik:");
+		fileSaveLabelDescription.setBounds(5, 5, 120, 20);
+		savePanel.add(fileSaveLabelDescription);
+	}
+
+	private void drawSaveButtons() {
 		closeSaveButton = new JButton("Exit");
 		closeSaveButton.addActionListener(new ActionListener() {
 			@Override
@@ -121,7 +164,7 @@ public class FileController {
 
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
 						file = fileChooser.getSelectedFile();
-						fileLabel.setText(file.getName());
+						fileSaveLabel.setText(file.getName());
 						saveSaveButton.setEnabled(true);
 					} else {
 						System.out.println("Open command cancelled by user.");
