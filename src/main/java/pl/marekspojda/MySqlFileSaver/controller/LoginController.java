@@ -5,17 +5,18 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class LoginController implements ErrorController {
 	private static final String PATH = "/error";
 
-	@RequestMapping("/login")
+	@RequestMapping(path = "/login", produces = "text/html; charset=UTF-8", method = RequestMethod.GET)
 	public String login() {
 		return "login";
 	}
 
-	@RequestMapping("/admin")
+	@RequestMapping(path = "/admin", produces = "text/html; charset=UTF-8", method = RequestMethod.GET)
 	public String allowedToAdminsOnly(HttpServletRequest request) {
 		if (request.isUserInRole("ROLE_ADMIN")) {
 			return "admin";
@@ -23,7 +24,7 @@ public class LoginController implements ErrorController {
 		return "redirect:/";
 	}
 
-	@RequestMapping("/user")
+	@RequestMapping(path = "/user", produces = "text/html; charset=UTF-8", method = RequestMethod.GET)
 	public String allowedToUsersOnly(HttpServletRequest request) {
 		if (request.isUserInRole("ROLE_USER")) {
 			return "user";

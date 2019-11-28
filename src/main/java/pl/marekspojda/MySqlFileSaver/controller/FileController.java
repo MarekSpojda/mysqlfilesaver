@@ -12,6 +12,7 @@ import java.security.Principal;
 import javax.swing.*;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,18 +27,18 @@ public class FileController {
 	private final JFileChooser fileChooser = new JFileChooser();
 	private final UserRepository userRepository;
 
-	private JFrame saveFrame;
-	private JPanel panel;
+	private JFrame saveFrame, downloadFrame;
+	private JPanel savePanel;
 	private File file;
 	private JLabel fileLabel, fileLabelDescription;
 	private Principal principal;
-	private JButton closeButton, openButton, saveButton;
+	private JButton closeSaveButton, openSaveButton, saveSaveButton;
 
 	public FileController(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
 
-	@RequestMapping(value = "/savefile", method = RequestMethod.POST)
+	@RequestMapping(value = "/savefile", produces = "text/html; charset=UTF-8", method = RequestMethod.POST)
 	public void saveFilewindow(Principal principal) {
 		this.principal = principal;
 		saveFrame = new JFrame();
@@ -46,7 +47,7 @@ public class FileController {
 		saveFrame.setUndecorated(true);
 		saveFrame.setResizable(false);
 
-		drawPanel();
+		drawSavePanel();
 
 		saveFrame.setVisible(true);
 	}
@@ -58,16 +59,29 @@ public class FileController {
 		return Messages.displayFiles(this.principal, userRepository);
 	}
 
-	private void drawPanel() {
-		panel = new JPanel();
-		panel.setBackground(Color.LIGHT_GRAY);
-		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-		panel.setLayout(null);
+	@RequestMapping(path = "/files/{id}", produces = "text/html; charset=UTF-8", method = RequestMethod.POST)
+	public void downloadFileWindow(@PathVariable String id) {
+		downloadFrame= new JFrame();
+		downloadFrame.setSize(700, 55);
+		downloadFrame.setLocationRelativeTo(null);
+		downloadFrame.setUndecorated(true);
+		downloadFrame.setResizable(false);
+
+//		drawSavePanel();
+
+		downloadFrame.setVisible(true);
+	}
+
+	private void drawSavePanel() {
+		savePanel = new JPanel();
+		savePanel.setBackground(Color.LIGHT_GRAY);
+		savePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		savePanel.setLayout(null);
 
 		drawLabels();
 		drawButtons();
 
-		saveFrame.getContentPane().add(BorderLayout.CENTER, panel);
+		saveFrame.getContentPane().add(BorderLayout.CENTER, savePanel);
 	}
 
 	private void drawLabels() {
@@ -76,49 +90,49 @@ public class FileController {
 		fileLabel.setBackground(Color.WHITE);
 		fileLabel.setOpaque(true);
 		fileLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-		panel.add(fileLabel);
+		savePanel.add(fileLabel);
 
 		fileLabelDescription = new JLabel("Wybrany plik:");
 		fileLabelDescription.setBounds(5, 5, 120, 20);
-		panel.add(fileLabelDescription);
+		savePanel.add(fileLabelDescription);
 	}
 
 	private void drawButtons() {
-		closeButton = new JButton("Exit");
-		closeButton.addActionListener(new ActionListener() {
+		closeSaveButton = new JButton("Exit");
+		closeSaveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveFrame.dispose();
 			}
 		});
-		closeButton.setBounds(215, 30, 100, 20);
-		panel.add(closeButton);
+		closeSaveButton.setBounds(215, 30, 100, 20);
+		savePanel.add(closeSaveButton);
 
-		// Creating savebutton earlier to prevent null exception
-		saveButton = new JButton("Save file");
-		saveButton.setEnabled(false);
+		// Creating saveSavebutton earlier to prevent null exception
+		saveSaveButton = new JButton("Save file");
+		saveSaveButton.setEnabled(false);
 
-		openButton = new JButton("Open file");
-		openButton.addActionListener(new ActionListener() {
+		openSaveButton = new JButton("Open file");
+		openSaveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == openButton) {
+				if (e.getSource() == openSaveButton) {
 					int returnVal = fileChooser.showOpenDialog(saveFrame);
 
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
 						file = fileChooser.getSelectedFile();
 						fileLabel.setText(file.getName());
-						saveButton.setEnabled(true);
+						saveSaveButton.setEnabled(true);
 					} else {
 						System.out.println("Open command cancelled by user.");
 					}
 				}
 			}
 		});
-		openButton.setBounds(5, 30, 100, 20);
-		panel.add(openButton);
+		openSaveButton.setBounds(5, 30, 100, 20);
+		savePanel.add(openSaveButton);
 
-		saveButton.addActionListener(new ActionListener() {
+		saveSaveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String fullFileName = file.getName();
@@ -153,7 +167,7 @@ public class FileController {
 				}
 			}
 		});
-		saveButton.setBounds(110, 30, 100, 20);
-		panel.add(saveButton);
+		saveSaveButton.setBounds(110, 30, 100, 20);
+		savePanel.add(saveSaveButton);
 	}
 }

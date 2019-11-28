@@ -19,13 +19,13 @@
 Seems like you're only user. Still better love story than Twilight.
 <form action="/savefile" method="post" id="saveform">
   <div>
-    <button type="submit" name="button" value="go">Go!</button>
+    <button type="submit" name="button" value="savefile">Save file</button>
   </div>
 </form>
         
 <form>
   <div>
-    <button type="submit" id="go2">Let's try to show files</button>
+    <button type="submit" id="showuserfiles">Show user files</button>
   </div>
 </form>
 

@@ -14,15 +14,28 @@ public class Messages {
 		StringBuilder stringBuilder = new StringBuilder();
 
 		User loadedUser = userRepository.findUserByEmailCustom(principal.getName());
-		String prefix = "<a href=\"/files/";
-		String middlefix = "\">";
-		String suffix = "</a><br>";
+		String prefix = "<button type=\"button\" class=\"downloadButton\" value=\"";
+		String middlefix = "\" onclick=\"showDownloadPanel()\">";
+		String suffix = "</button><br>";
 
 		for (FileRepresentation fileRepresentation : loadedUser.getFiles()) {
 			String entry = prefix + fileRepresentation.getFileId() + middlefix + fileRepresentation.getFileName() + "."
 					+ fileRepresentation.getFileExtension() + suffix;
 			stringBuilder.append(entry);
 		}
+		
+		stringBuilder.append("<script>"
+				+ "function showDownloadPanel() {"
+				+ "let loadId = $(this).attr('value');"
+				+ ""
+				+ "$.ajax({\n" + 
+				"        url:'/files/'+loadId,\n" + 
+				"        type:'post',\n" + 
+				"        success:function(){\n" + 
+				"        }\n" + 
+				"      });"
+				+ "};"
+				+ "</script>");
 
 		return stringBuilder.toString();
 	}
