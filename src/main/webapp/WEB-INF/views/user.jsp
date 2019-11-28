@@ -18,15 +18,17 @@
 <%@ include file="header.jsp" %> 
 Seems like you're only user. Still better love story than Twilight.
 <form action="/savefile" method="post" id="saveform">
-            <div>
-                <button type="submit" name="button" value="go">Go!</button>
-            </div>
-        </form>
+  <div>
+    <button type="submit" name="button" value="go">Go!</button>
+  </div>
+</form>
         
-        <form>
-            <div>
-                <button type="submit" id="go2">Let's test script!</button>
-            </div>
-        </form>
+<form>
+  <div>
+    <button type="submit" id="go2">Let's try to show files</button>
+  </div>
+</form>
+
+<div id="userfiles"></div>
 </body>
 </html>

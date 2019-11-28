@@ -15,7 +15,7 @@
             
             <sec:authorize access="hasRole('ROLE_ADMIN') and isAuthenticated()">
                     <button>Witaj ${user.name} ${user.surname}</button> |
-                <a href="/user">Menu</a> |
+                <a href="/user" id="linktoshowfiles">Menu</a> |
                 <a href="/admin">Administrator panel</a> |
                 <a href="/logout">Log out</a> |
             </sec:authorize>

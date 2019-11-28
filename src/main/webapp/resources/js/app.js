@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+    let divforfiles = $("#userfiles");
     
     $('#go2').click(function(event){
       event.preventDefault();
@@ -15,5 +16,16 @@ document.addEventListener("DOMContentLoaded", function () {
         success:function(){
         }
       });
-    });  
+    });
+
+    $("#go2").on("click", function () {
+        $.ajax({
+            type: 'GET',
+            url: '/userfiles',
+            contentType: 'application/json',
+            success: function (data) {
+                divforfiles.html(data);
+            }
+        });
+    });
 });

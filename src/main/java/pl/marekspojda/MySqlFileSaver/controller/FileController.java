@@ -14,9 +14,11 @@ import javax.swing.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import pl.marekspojda.MySqlFileSaver.entity.FileRepresentation;
 import pl.marekspojda.MySqlFileSaver.entity.User;
+import pl.marekspojda.MySqlFileSaver.messages.Messages;
 import pl.marekspojda.MySqlFileSaver.repository.UserRepository;
 
 @Controller
@@ -42,12 +44,18 @@ public class FileController {
 		saveFrame.setSize(700, 55);
 		saveFrame.setLocationRelativeTo(null);
 		saveFrame.setUndecorated(true);
-
 		saveFrame.setResizable(false);
 
 		drawPanel();
 
 		saveFrame.setVisible(true);
+	}
+
+	@RequestMapping(path = "/userfiles", produces = "text/html; charset=UTF-8", method = RequestMethod.GET)
+	@ResponseBody
+	public String userFilesGet(Principal principal) {
+		this.principal = principal;
+		return Messages.displayFiles(this.principal, userRepository);
 	}
 
 	private void drawPanel() {
