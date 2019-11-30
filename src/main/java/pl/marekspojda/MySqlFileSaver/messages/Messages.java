@@ -12,30 +12,17 @@ import pl.marekspojda.MySqlFileSaver.repository.UserRepository;
 public class Messages {
 	public static String displayFiles(Principal principal, UserRepository userRepository) {
 		StringBuilder stringBuilder = new StringBuilder();
-
 		User loadedUser = userRepository.findUserByEmailCustom(principal.getName());
-		String prefix = "<button type=\"button\" class=\"downloadButton\" value=\"";
-		String middlefix = "\" onclick=\"showDownloadPanel()\">";
-		String suffix = "</button><br>";
+		String prefix1 = "<button type=\"button\" id=\"file";
+		String prefix2 = "\" fileidval=\"";
+		String prefix3 = "\">";
+		String prefix4 = "</button><br>";
 
 		for (FileRepresentation fileRepresentation : loadedUser.getFiles()) {
-			String entry = prefix + fileRepresentation.getFileId() + middlefix + fileRepresentation.getFileName() + "."
-					+ fileRepresentation.getFileExtension() + suffix;
+			String entry = prefix1 + fileRepresentation.getFileId() + prefix2 + fileRepresentation.getFileId() + prefix3
+					+ fileRepresentation.getFileName() + "." + fileRepresentation.getFileExtension() + prefix4;
 			stringBuilder.append(entry);
 		}
-		
-		stringBuilder.append("<script>"
-				+ "function showDownloadPanel() {"
-				+ "let loadId = $(this).attr('value');"
-				+ ""
-				+ "$.ajax({\n" + 
-				"        url:'/files/'+loadId,\n" + 
-				"        type:'post',\n" + 
-				"        success:function(){\n" + 
-				"        }\n" + 
-				"      });"
-				+ "};"
-				+ "</script>");
 
 		return stringBuilder.toString();
 	}

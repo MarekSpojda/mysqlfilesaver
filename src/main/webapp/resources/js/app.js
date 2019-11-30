@@ -24,4 +24,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
+    
+    divforfiles.on("click", "button", function (event) {
+        console.log("There should be ID here:("+$(this).attr("id"));
+    });
 });
