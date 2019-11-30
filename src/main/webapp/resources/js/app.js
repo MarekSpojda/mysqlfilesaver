@@ -26,6 +26,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     
     divforfiles.on("click", "button", function (event) {
-        console.log("There should be ID here:("+$(this).attr("id"));
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '/files/'+$(this).attr("fileidval"),
+            contentType: 'application/json',
+            success: function (data) {
+            }
+        });
     });
 });

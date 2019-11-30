@@ -62,17 +62,15 @@ public class FileController {
 
 	@RequestMapping(path = "/files/{id}", produces = "text/html; charset=UTF-8", method = RequestMethod.POST)
 	public void downloadFileWindow(@PathVariable String id) {
-		//TODO loadFile: id received from script is undefined
-//		Long fileId = Long.parseLong(id);
-		System.out.println("Hmmmpff...: " + id);
+		Long fileId = Long.parseLong(id);
 		downloadFrame = new JFrame();
 		downloadFrame.setSize(700, 55);
 		downloadFrame.setLocationRelativeTo(null);
 		downloadFrame.setUndecorated(true);
 		downloadFrame.setResizable(false);
-//		fileRepresentation = this.getFileRepresentation(fileId);
+		fileRepresentation = this.getFileRepresentation(fileId);
 
-//		drawDownloadPanel();
+		drawDownloadPanel();
 
 		downloadFrame.setVisible(true);
 	}
@@ -97,6 +95,7 @@ public class FileController {
 		downloadPanel.setLayout(null);
 
 		drawDownloadLabels();
+		//TODO draw download buttons
 //		drawButtons();
 
 		downloadFrame.getContentPane().add(BorderLayout.CENTER, downloadPanel);
