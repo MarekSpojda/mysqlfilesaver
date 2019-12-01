@@ -1,12 +1,17 @@
 package pl.marekspojda.MySqlFileSaver.controller;
 
 import javax.swing.JFrame;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.security.Principal;
 import javax.swing.*;
@@ -33,7 +38,7 @@ public class FileController {
 	private FileRepresentation fileRepresentation;
 	private JLabel fileSaveLabel, fileLoadLabel, fileSaveLabelDescription, fileLoadLabelDescription;
 	private Principal principal;
-	private JButton closeSaveButton, openSaveButton, saveSaveButton;
+	private JButton closeSaveButton, openSaveButton, saveSaveButton, closeDownloadButton, openDownloadButton;
 
 	public FileController(UserRepository userRepository) {
 		this.userRepository = userRepository;
@@ -95,8 +100,7 @@ public class FileController {
 		downloadPanel.setLayout(null);
 
 		drawDownloadLabels();
-		//TODO draw download buttons
-//		drawButtons();
+		drawDownloadButtons();
 
 		downloadFrame.getContentPane().add(BorderLayout.CENTER, downloadPanel);
 	}
@@ -137,6 +141,52 @@ public class FileController {
 		fileSaveLabelDescription = new JLabel("Wybrany plik:");
 		fileSaveLabelDescription.setBounds(5, 5, 120, 20);
 		savePanel.add(fileSaveLabelDescription);
+	}
+
+	private void drawDownloadButtons() {
+		closeDownloadButton = new JButton("Exit");
+		closeDownloadButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				downloadFrame.dispose();
+			}
+		});
+		closeDownloadButton.setBounds(215, 30, 100, 20);
+		downloadPanel.add(closeDownloadButton);
+
+		openDownloadButton = new JButton("Set download location");
+		openDownloadButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == openDownloadButton) {
+					// Setting file filter
+					fileChooser.setAcceptAllFileFilterUsed(false);
+					FileFilter filter = new FileNameExtensionFilter(
+							"User file from database (*." + fileRepresentation.getFileExtension() + ")",
+							fileRepresentation.getFileExtension());
+					fileChooser.setFileFilter(filter);
+					int returnVal = fileChooser.showSaveDialog(downloadFrame);
+
+					if (returnVal == JFileChooser.APPROVE_OPTION) {
+						fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+						// Starts writing bytes into selected file
+						try {
+							OutputStream os = new FileOutputStream(fileChooser.getSelectedFile());
+							os.write(fileRepresentation.getFileContent());
+							os.close();
+							downloadFrame.dispose();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					} else {
+						System.out.println("Download command cancelled by user.");
+					}
+				}
+			}
+		});
+		openDownloadButton.setBounds(5, 30, 205, 20);
+		downloadPanel.add(openDownloadButton);
 	}
 
 	private void drawSaveButtons() {
