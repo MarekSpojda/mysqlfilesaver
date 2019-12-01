@@ -38,7 +38,7 @@ public class FileController {
 	private FileRepresentation fileRepresentation;
 	private JLabel fileSaveLabel, fileLoadLabel, fileSaveLabelDescription, fileLoadLabelDescription;
 	private Principal principal;
-	private JButton closeSaveButton, openSaveButton, saveSaveButton, closeDownloadButton, openDownloadButton;
+	private JButton closeSaveButton, selectSaveButton, saveSaveButton, closeDownloadButton, openDownloadButton;
 
 	public FileController(UserRepository userRepository) {
 		this.userRepository = userRepository;
@@ -160,6 +160,8 @@ public class FileController {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == openDownloadButton) {
 					// Setting file filter
+					fileChooser.resetChoosableFileFilters();
+					fileChooser.setSelectedFile(new File(""));
 					fileChooser.setAcceptAllFileFilterUsed(false);
 					FileFilter filter = new FileNameExtensionFilter(
 							"User file from database (*." + fileRepresentation.getFileExtension() + ")",
@@ -204,11 +206,13 @@ public class FileController {
 		saveSaveButton = new JButton("Save file");
 		saveSaveButton.setEnabled(false);
 
-		openSaveButton = new JButton("Open file");
-		openSaveButton.addActionListener(new ActionListener() {
+		selectSaveButton = new JButton("Select");
+		selectSaveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == openSaveButton) {
+				if (e.getSource() == selectSaveButton) {
+					fileChooser.resetChoosableFileFilters();
+					fileChooser.setSelectedFile(new File(""));
 					int returnVal = fileChooser.showOpenDialog(saveFrame);
 
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -221,8 +225,8 @@ public class FileController {
 				}
 			}
 		});
-		openSaveButton.setBounds(5, 30, 100, 20);
-		savePanel.add(openSaveButton);
+		selectSaveButton.setBounds(5, 30, 100, 20);
+		savePanel.add(selectSaveButton);
 
 		saveSaveButton.addActionListener(new ActionListener() {
 			@Override
